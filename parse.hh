@@ -36,13 +36,15 @@ public:
    ~CharNotFound() throw() { }
    const char * what()
       {
-         if (What.empty()) {
+         if (What.empty())
             ((((What = "Expected '") += Char) += "' got '") += *Input) += "'";
-         }
+
          return What.c_str();
       }
-   char Char;
-   const char * Input;
+
+   const char Char;
+   const char * const Input;
+private:
    std::string What;
 };
 

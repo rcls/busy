@@ -1,7 +1,7 @@
 
 all: count compare parse
 
-CXXFLAGS=-Wall -g3 -O2
+CXXFLAGS=-Wall -g3 -O2 -MMD
 
 # Force everything to rebuild every time.
 .PHONY: compare count clean tar
@@ -32,23 +32,23 @@ reduced: reduced.c
 	gcc -s -o reduced reduced.c
 
 # We add -Wno-unused to avoid warnings from the ',' expressions in pure.c.
-tree.o: tree.cc tree.hh pure.c
+tree.o: tree.cc
 	g++ ${CXXFLAGS} -Wno-unused  -c -o tree.o tree.cc
 
-boot: tree.hh tree.cc pure.c boot.cc
-	g++ -o boot boot.cc
+boot: boot.cc
+	g++ ${CXXFLAGS} -o boot boot.cc
 
 parse: parse.o tree.o bitstream.o
-	g++ -o parse parse.o tree.o bitstream.o
+	g++ ${CXXFLAGS} -o parse parse.o tree.o bitstream.o
 
 pairtest: pair.c
 
-bitstream.o: bitstream.hh parse.hh tree.hh
-
-parse.o: parse.hh tree.hh
-
 clean:
-	rm -f *.o *.s *~ reduced full parse pairtest boot full.c reduced.c
+	rm -f *.o *.d *.s *~ reduced full parse pairtest boot full.c reduced.c
 
-tar:
-	tar cfz busy.tar.gz Makefile README.txt *.c *.cc *.hh
+tar: busy.tar.gz
+
+busy.tar.gz: Makefile README.txt *.c *.cc *.hh
+	tar cfz busy.tar.gz $^
+
+-include *.d
