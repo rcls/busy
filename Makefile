@@ -1,7 +1,7 @@
 
 all: count compare parse
 
-CXXFLAGS=-Wall -g3 -O2 -MMD
+CXXFLAGS=-Wall -Wno-parentheses -g3 -O2 -MMD
 
 # Force everything to rebuild every time.
 .PHONY: compare count clean tar
@@ -25,11 +25,12 @@ reduced.c: full.c pure.pl
 compare: full reduced
 	@cmp full reduced && echo "full and reduced match :-)"
 
+COMPARE_CFLAGS=-Wno-implicit-int -Wno-implicit-function-declaration -fwhole-program -m32 -O0 -s
 full: full.c
-	gcc -s -o full full.c
+	gcc $(COMPARE_CFLAGS) -o full full.c
 
 reduced: reduced.c
-	gcc -s -o reduced reduced.c
+	gcc $(COMPARE_CFLAGS) -o reduced reduced.c
 
 # We add -Wno-unused to avoid warnings from the ',' expressions in pure.c.
 tree.o: tree.cc

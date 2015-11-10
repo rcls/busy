@@ -15,7 +15,7 @@ int height (Tree h)
    int right = height (h.Right()) + 1;
 
    return left > right ? left : right;
-}   
+}
 
 int main()
 {
