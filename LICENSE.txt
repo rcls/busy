@@ -1,0 +1,6 @@
+This code is placed in the public domain.
+
+If you use it please acknowledge its history.  You don't have to do
+that, but there is really no point in stealing it trying to sell it,
+the number of people with hardware capable of running this code, is
+very small...
